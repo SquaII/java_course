@@ -1,4 +1,5 @@
 .gradle
+.idea/workspace.xml
 build/
 
 # Ignore Gradle GUI config
