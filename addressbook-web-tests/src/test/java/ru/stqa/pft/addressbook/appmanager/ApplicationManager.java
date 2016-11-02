@@ -10,6 +10,7 @@ public class ApplicationManager {
     private SessionHelper sessionHelper;
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
+    private ContactHelper contactHelper;
 
     public void init() {
         // firefox 47 и 48 не работает с selenium 2.53
@@ -19,6 +20,7 @@ public class ApplicationManager {
         groupHelper = new GroupHelper(wd);
         navigationHelper = new NavigationHelper(wd);
         sessionHelper = new SessionHelper(wd);
+        contactHelper = new ContactHelper(wd);
 
         wd.get("http://localhost/addressbook/");
         sessionHelper.login("admin", "secret");
@@ -34,5 +36,9 @@ public class ApplicationManager {
 
     public NavigationHelper getNavigationHelper() {
         return navigationHelper;
+    }
+
+    public ContactHelper getContactHelper() {
+        return contactHelper;
     }
 }

@@ -1,4 +1,9 @@
-package ru.stqa.pft.addressbook;
+package ru.stqa.pft.addressbook.model;
+
+import ru.stqa.pft.addressbook.model.ContactEmailData;
+import ru.stqa.pft.addressbook.model.ContactNameData;
+import ru.stqa.pft.addressbook.model.ContactOtherData;
+import ru.stqa.pft.addressbook.model.ContactPhoneData;
 
 public class ContactData {
     private final ContactNameData contactNameData;
