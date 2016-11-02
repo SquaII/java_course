@@ -1,8 +1,5 @@
 package ru.stqa.pft.addressbook;
 
-/**
- * Created by Squall on 01.11.2016.
- */
 public class ContactOtherData {
     private final String title;
     private final String company;
