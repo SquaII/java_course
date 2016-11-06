@@ -1,21 +1,33 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
-    FirefoxDriver wd;
+    WebDriver wd;
 
     private SessionHelper sessionHelper;
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
     private ContactHelper contactHelper;
+    private String browser;
+
+    public ApplicationManager(String browser) {
+        this.browser = browser;
+    }
 
     public void init() {
-        // firefox 47 и 48 не работает с selenium 2.53
-        System.setProperty("webdriver.firefox.bin","F:\\Programs\\Firefox 46\\firefox.exe");
-        wd = new FirefoxDriver();
+        if (browser.equals(BrowserType.FIREFOX)) {
+            // firefox 47 и выше не работает с selenium 2.53
+            System.setProperty("webdriver.firefox.bin","F:\\Programs\\Firefox 46\\firefox.exe");
+            wd = new FirefoxDriver();
+        } else if (browser.equals(BrowserType.CHROME)) {
+            wd = new ChromeDriver();
+        }
         wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         groupHelper = new GroupHelper(wd);
         navigationHelper = new NavigationHelper(wd);
