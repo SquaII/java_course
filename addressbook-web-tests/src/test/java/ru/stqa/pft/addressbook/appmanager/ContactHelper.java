@@ -2,7 +2,6 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.*;
 
 public class ContactHelper extends HelperBase {
@@ -23,10 +22,10 @@ public class ContactHelper extends HelperBase {
         fillContactNames(contactData.getContactNameData());
         fillContactPhones(contactData.getContactPhoneData());
         fillContactEmails(contactData.getContactEmailData());
-        fillContractOthers(contactData.getContactOtherData());
+        fillContactOthers(contactData.getContactOtherData());
     }
 
-    public void fillContractOthers(ContactOtherData contactOtherData) {
+    public void fillContactOthers(ContactOtherData contactOtherData) {
         type(By.name("title"), contactOtherData.getTitle());
         type(By.name("company"), contactOtherData.getCompany());
         type(By.name("address"), contactOtherData.getAddress());
@@ -65,7 +64,7 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//table[@id='maintable']//tr[2]//img[@title='Edit']"));
     }
 
-    public void submitContractModification() {
+    public void submitContactModification() {
         click(By.name("update"));
     }
 }

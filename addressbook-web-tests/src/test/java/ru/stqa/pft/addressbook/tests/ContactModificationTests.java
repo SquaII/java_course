@@ -3,14 +3,14 @@ package ru.stqa.pft.addressbook.tests;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.*;
 
-public class ContractModificationTest extends TestBase {
+public class ContactModificationTests extends TestBase {
 
     @Test
     public void testContactModification() {
         app.getNavigationHelper().gotoHomePage();
         app.getContactHelper().initContactModification();
         app.getContactHelper().fillContactData(getContactData());
-        app.getContactHelper().submitContractModification();
+        app.getContactHelper().submitContactModification();
     }
 
     public ContactData getContactData() {
@@ -20,5 +20,5 @@ public class ContractModificationTest extends TestBase {
         ContactOtherData otherData = new ContactOtherData("title_mod", "company_mod", "address_mod");
         return new ContactData(nameData, phoneData, emailData, otherData);
     }
-    
+
 }
