@@ -60,4 +60,11 @@ public class ContactHelper extends HelperBase {
         wd.switchTo().alert().accept();
     }
 
+    public void initContactModification() {
+        click(By.xpath("//table[@id='maintable']//tr[2]//img[@title='Edit']"));
+    }
+
+    public void submitContractModification() {
+        click(By.name("update"));
+    }
 }
