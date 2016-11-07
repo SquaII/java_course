@@ -1,22 +1,19 @@
 package ru.stqa.pft.addressbook.model;
 
-import ru.stqa.pft.addressbook.model.ContactEmailData;
-import ru.stqa.pft.addressbook.model.ContactNameData;
-import ru.stqa.pft.addressbook.model.ContactOtherData;
-import ru.stqa.pft.addressbook.model.ContactPhoneData;
-
 public class ContactData {
     private final ContactNameData contactNameData;
     private final ContactPhoneData contactPhoneData;
     private final ContactEmailData contactEmailData;
     private final ContactOtherData contactOtherData;
+    private String groupName;
 
     public ContactData(ContactNameData contactNameData, ContactPhoneData contactPhoneData, ContactEmailData contactEmailData,
-                       ContactOtherData contactOtherData) {
+                       ContactOtherData contactOtherData, String groupName) {
         this.contactNameData = contactNameData;
         this.contactPhoneData = contactPhoneData;
         this.contactEmailData = contactEmailData;
         this.contactOtherData = contactOtherData;
+        this.groupName = groupName;
     }
 
     public ContactOtherData getContactOtherData(){
@@ -34,4 +31,9 @@ public class ContactData {
     public ContactEmailData getContactEmailData() {
         return contactEmailData;
     }
+
+    public String getGroupName() {
+        return groupName;
+    }
 }
+

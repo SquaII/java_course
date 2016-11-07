@@ -9,7 +9,7 @@ public class ContactModificationTests extends TestBase {
     public void testContactModification() {
         app.getNavigationHelper().gotoHomePage();
         app.getContactHelper().initContactModification();
-        app.getContactHelper().fillContactData(getContactData());
+        app.getContactHelper().fillContactData(getContactData(), false);
         app.getContactHelper().submitContactModification();
     }
 
@@ -18,7 +18,7 @@ public class ContactModificationTests extends TestBase {
         ContactPhoneData phoneData = new ContactPhoneData("fax_mod", "work_mod", "mobile_mod", "home_mod");
         ContactEmailData emailData = new ContactEmailData("email_mod", "email2_mod", "email3_mod");
         ContactOtherData otherData = new ContactOtherData("title_mod", "company_mod", "address_mod");
-        return new ContactData(nameData, phoneData, emailData, otherData);
+        return new ContactData(nameData, phoneData, emailData, otherData, null);
     }
 
 }
