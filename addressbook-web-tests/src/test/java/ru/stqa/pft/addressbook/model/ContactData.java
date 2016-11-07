@@ -1,10 +1,10 @@
 package ru.stqa.pft.addressbook.model;
 
 public class ContactData {
-    private final ContactNameData contactNameData;
-    private final ContactPhoneData contactPhoneData;
-    private final ContactEmailData contactEmailData;
-    private final ContactOtherData contactOtherData;
+    public final ContactNameData contactNameData;
+    public final ContactPhoneData contactPhoneData;
+    public final ContactEmailData contactEmailData;
+    public final ContactOtherData contactOtherData;
     private String groupName;
 
     public ContactData(ContactNameData contactNameData, ContactPhoneData contactPhoneData, ContactEmailData contactEmailData,

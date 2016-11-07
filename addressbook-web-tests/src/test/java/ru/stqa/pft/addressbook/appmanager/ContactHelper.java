@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -21,13 +22,19 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillContactData(ContactData contactData, boolean creation) {
-        fillContactNames(contactData.getContactNameData());
-        fillContactPhones(contactData.getContactPhoneData());
-        fillContactEmails(contactData.getContactEmailData());
-        fillContactOthers(contactData.getContactOtherData());
+        if (contactData.contactNameData != null) {fillContactNames(contactData.getContactNameData());}
+        if (contactData.contactPhoneData != null) {fillContactPhones(contactData.getContactPhoneData());}
+        if (contactData.contactEmailData != null) {fillContactEmails(contactData.getContactEmailData());}
+        if (contactData.contactOtherData != null) {fillContactOthers(contactData.getContactOtherData());}
 
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroupName());
+            if (contactData.getGroupName() != null) {
+                try {
+                    new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroupName());
+                } catch (NoSuchElementException ex) {
+                    // не выбираем группу, если указанной группы не существует
+                }
+            }
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -74,5 +81,20 @@ public class ContactHelper extends HelperBase {
 
     public void submitContactModification() {
         click(By.name("update"));
+    }
+
+    public void createContact(ContactData contactData) {
+        initContactCreation();
+        fillContactData(contactData, true);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    public void returnToHomePage() {
+        click(By.linkText("home page"));
+    }
+
+    public boolean isThereAContact() {
+        return isElementPresent(By.name("selected[]"));
     }
 }
