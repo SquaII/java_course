@@ -3,9 +3,13 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -22,10 +26,10 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillContactData(ContactData contactData, boolean creation) {
-        if (contactData.contactNameData != null) {fillContactNames(contactData.getContactNameData());}
-        if (contactData.contactPhoneData != null) {fillContactPhones(contactData.getContactPhoneData());}
-        if (contactData.contactEmailData != null) {fillContactEmails(contactData.getContactEmailData());}
-        if (contactData.contactOtherData != null) {fillContactOthers(contactData.getContactOtherData());}
+        fillContactNames(contactData.getContactNameData());
+        fillContactPhones(contactData.getContactPhoneData());
+        fillContactEmails(contactData.getContactEmailData());
+        fillContactOthers(contactData.getContactOtherData());
 
         if (creation) {
             if (contactData.getGroupName() != null) {
@@ -75,8 +79,11 @@ public class ContactHelper extends HelperBase {
         wd.switchTo().alert().accept();
     }
 
-    public void initContactModification() {
-        click(By.xpath("//table[@id='maintable']//tr[2]//img[@title='Edit']"));
+    public int initContactModification() {
+        WebElement element = wd.findElement(By.xpath("//table[@id='maintable']//tr[2]"));
+        int contactId = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
+        click(By.xpath("//img[@title='Edit']"));
+        return contactId;
     }
 
     public void submitContactModification() {
@@ -97,4 +104,19 @@ public class ContactHelper extends HelperBase {
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
     }
+
+    public List<ContactData> getContactList() {
+        List<ContactData> contacts = new ArrayList<ContactData>();
+        List<WebElement> elements = wd.findElements(By.xpath("//table[@id='maintable']//tr[@name='entry']"));
+        for (WebElement element : elements){
+            String lastName = element.findElement(By.xpath("td[2]")).getText();
+            String firstName = element.findElement(By.xpath("td[3]")).getText();
+            ContactData contact = new ContactData(new ContactNameData(firstName, null, lastName, null));
+            contacts.add(contact);
+
+            contact.setId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")));
+        }
+        return contacts;
+    }
+
 }
