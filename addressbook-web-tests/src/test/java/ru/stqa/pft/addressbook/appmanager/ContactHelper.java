@@ -51,7 +51,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillContactEmails(ContactEmailData contactEmailData) {
-        type(By.name("email"), contactEmailData.getEmail());
+        type(By.name("email"), contactEmailData.getEmail1());
         type(By.name("email2"), contactEmailData.getEmail2());
         type(By.name("email3"), contactEmailData.getEmail3());
     }
@@ -108,13 +108,34 @@ public class ContactHelper extends HelperBase {
     public List<ContactData> getContactList() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.xpath("//table[@id='maintable']//tr[@name='entry']"));
+        /*
+            Достаем данные о контактах, перебирая строки таблицы.
+            Так как смотрим строки, то мы не натыкаемся на лишние теги td,
+                поэтому можно использовать глобальный поиск по элементу-строке (без //).
+        */
         for (WebElement element : elements){
+            WebElement phonesData = element.findElement(By.xpath("td[6]"));
+            ContactPhoneData phoneData = new ContactPhoneData(phonesData);
+
+            List<WebElement> emailsList = new ArrayList<>();
+            try {
+                emailsList = element.findElements(By.xpath("td[5]/a"));     // no emails for contact
+            }
+            catch (NoSuchElementException ex) {}
+            ContactEmailData emailData = new ContactEmailData(emailsList);
+
             String lastName = element.findElement(By.xpath("td[2]")).getText();
             String firstName = element.findElement(By.xpath("td[3]")).getText();
-            ContactData contact = new ContactData(new ContactNameData(firstName, null, lastName, null));
-            contacts.add(contact);
+            ContactData contactData = new ContactData(
+                    new ContactNameData(firstName, null, lastName, null),
+                    phoneData,
+                    emailData,
+                    null,
+                    null
+            );
+            contacts.add(contactData);
 
-            contact.setId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")));
+            contactData.setId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")));
         }
         return contacts;
     }

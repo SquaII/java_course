@@ -1,48 +1,57 @@
 package ru.stqa.pft.addressbook.model;
 
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactPhoneData {
-    private final String fax;
-    private final String work;
-    private final String mobile;
-    private final String home;
+    private List<String> phones = new ArrayList<>();
 
     public ContactPhoneData() {
-        this.fax = null;
-        this.work = null;
-        this.mobile = null;
-        this.home = null;
+        for (int i=0; i < 4; i++) {
+            phones.add(null);
+        }
     }
 
-    public ContactPhoneData(String fax, String work, String mobile, String home) {
-        this.fax = fax;
-        this.work = work;
-        this.mobile = mobile;
-        this.home = home;
+    public ContactPhoneData(String home, String mobile, String work, String fax) {
+        this.phones.add(home);
+        this.phones.add(mobile);
+        this.phones.add(work);
+        this.phones.add(fax);
+    }
+
+    public ContactPhoneData(WebElement phonesData) {
+        String[] phonesList = phonesData.getText().split("\n");
+        for (int i=0; i < 4; i++) {
+            if (i < phonesList.length && phonesList[i].equals("")) { this.phones.add(phonesList[i]);}
+            else { this.phones.add(null);}
+        }
     }
 
     public String getFax() {
-        return fax;
+        return phones.get(3);
     }
 
     public String getWork() {
-        return work;
+        return phones.get(2);
     }
 
     public String getMobile() {
-        return mobile;
+        return phones.get(1);
     }
 
     public String getHome() {
-        return home;
+        return phones.get(0);
     }
 
     @Override
     public String toString() {
         return "ContactPhoneData{" +
-                "fax='" + fax + '\'' +
-                ", work='" + work + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", home='" + home + '\'' +
+                "fax='" + getFax() + '\'' +
+                ", work='" + getWork() + '\'' +
+                ", mobile='" + getMobile() + '\'' +
+                ", home='" + getHome() + '\'' +
                 '}';
     }
 
@@ -53,19 +62,17 @@ public class ContactPhoneData {
 
         ContactPhoneData that = (ContactPhoneData) o;
 
-        if (fax != null ? !fax.equals(that.fax) : that.fax != null) return false;
-        if (work != null ? !work.equals(that.work) : that.work != null) return false;
-        if (mobile != null ? !mobile.equals(that.mobile) : that.mobile != null) return false;
-        return home != null ? home.equals(that.home) : that.home == null;
+        return phones != null ? phones.equals(that.phones) : that.phones == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = fax != null ? fax.hashCode() : 0;
-        result = 31 * result + (work != null ? work.hashCode() : 0);
-        result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
-        result = 31 * result + (home != null ? home.hashCode() : 0);
+        int result = getHome() != null ? getHome().hashCode() : 0;
+        result = 31 * result + (getWork() != null ? getWork().hashCode() : 0);
+        result = 31 * result + (getMobile() != null ? getMobile().hashCode() : 0);
+        result = 31 * result + (getFax() != null ? getFax().hashCode() : 0);
         return result;
     }
+
 }

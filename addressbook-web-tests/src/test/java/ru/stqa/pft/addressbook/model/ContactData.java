@@ -55,6 +55,14 @@ public class ContactData {
         return groupName;
     }
 
+    public void convertToListData() {
+        this.contactNameData.setMiddleName(null);
+        this.contactNameData.setNickName(null);
+        this.contactOtherData.setTitle(null);
+        this.contactOtherData.setCompany(null);
+        this.groupName = null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,12 +85,12 @@ public class ContactData {
     @Override
     public String toString() {
         return "ContactData{" +
-                "id=" + id +
-                ", contactNameData=" + contactNameData +
-                ", contactPhoneData=" + contactPhoneData +
-                ", contactEmailData=" + contactEmailData +
-                ", contactOtherData=" + contactOtherData +
-                ", groupName='" + groupName + '\'' +
+                "id=" + getId() +
+                ", contactNameData=" + getContactNameData() +
+                ", contactPhoneData=" + getContactPhoneData() +
+                ", contactEmailData=" + getContactEmailData() +
+                ", contactOtherData=" + getContactOtherData() +
+                ", groupName='" + getGroupName() + '\'' +
                 '}';
     }
 

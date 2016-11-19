@@ -32,12 +32,8 @@ public class ContactModificationTests extends TestBase {
         List<ContactData> after = app.getContactHelper().getContactList();
         Assert.assertEquals(after.size(), before.size());
 
-        for (int i = 0; i < before.size(); i++) {
-            if (before.get(i).getId() == contractId) {
-                before.remove(i);
-                break;
-            }
-        }
+        before.remove(0);
+        contact.convertToListData();
         before.add(contact);
         Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
     }

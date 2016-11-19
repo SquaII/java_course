@@ -1,40 +1,50 @@
 package ru.stqa.pft.addressbook.model;
 
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactEmailData {
-    private final String email;
-    private final String email2;
-    private final String email3;
+    private List<String> emails = new ArrayList<>();
 
     public ContactEmailData() {
-        this.email = null;
-        this.email2 = null;
-        this.email3 = null;
+        for (int i=0; i < 3; i++) {
+            emails.add(null);
+        }
     }
 
     public ContactEmailData(String email, String email2, String email3) {
-        this.email = email;
-        this.email2 = email2;
-        this.email3 = email3;
+        this.emails.add(email);
+        this.emails.add(email2);
+        this.emails.add(email3);
     }
 
-    public String getEmail() {
-        return email;
+    public ContactEmailData(List<WebElement> emailsList) {
+        for (int i=0; i < 3; i++) {
+            if (i < emailsList.size()) { this.emails.add(emailsList.get(i).getText());}
+            else { this.emails.add(null);}
+        }
+    }
+
+    public String getEmail1() {
+        return emails.get(0);
     }
 
     public String getEmail2() {
-        return email2;
+        return emails.get(1);
     }
 
     public String getEmail3() {
-        return email3;
+        return emails.get(2);
     }
 
     @Override
     public String toString() {
         return "ContactEmailData{" +
-                "email='" + email + '\'' +
-                ", email2='" + email2 + '\'' +
-                ", email3='" + email3 + '\'' +
+                "email='" + getEmail1() + '\'' +
+                ", email2='" + getEmail2() + '\'' +
+                ", email3='" + getEmail3() + '\'' +
                 '}';
     }
 
@@ -43,19 +53,17 @@ public class ContactEmailData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ContactEmailData that = (ContactEmailData) o;
+        ContactEmailData emailData = (ContactEmailData) o;
 
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (email2 != null ? !email2.equals(that.email2) : that.email2 != null) return false;
-        return email3 != null ? email3.equals(that.email3) : that.email3 == null;
+        return emails != null ? emails.equals(emailData.emails) : emailData.emails == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = email != null ? email.hashCode() : 0;
-        result = 31 * result + (email2 != null ? email2.hashCode() : 0);
-        result = 31 * result + (email3 != null ? email3.hashCode() : 0);
+        int result = getEmail1() != null ? getEmail1().hashCode() : 0;
+        result = 31 * result + (getEmail2() != null ? getEmail2().hashCode() : 0);
+        result = 31 * result + (getEmail3() != null ? getEmail3().hashCode() : 0);
         return result;
     }
 }

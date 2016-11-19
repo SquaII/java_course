@@ -1,9 +1,9 @@
 package ru.stqa.pft.addressbook.model;
 
 public class ContactOtherData {
-    private final String title;
-    private final String company;
-    private final String address;
+    private String title;
+    private String company;
+    private String address;
 
     public ContactOtherData() {
         this.title = null;
@@ -29,12 +29,16 @@ public class ContactOtherData {
         return address;
     }
 
+    public void setTitle(String title) { this.title = title; }
+    public void setCompany(String company) { this.company = company; }
+    public void setAddress(String address) { this.address = address; }
+
     @Override
     public String toString() {
         return "ContactOtherData{" +
-                "title='" + title + '\'' +
-                ", company='" + company + '\'' +
-                ", address='" + address + '\'' +
+                "title='" + getTitle() + '\'' +
+                ", company='" + getCompany() + '\'' +
+                ", address='" + getAddress() + '\'' +
                 '}';
     }
 
