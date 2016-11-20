@@ -3,29 +3,11 @@ package ru.stqa.pft.addressbook.model;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ContactEmailData {
-    private List<String> emails = new ArrayList<>();
-
-    public ContactEmailData() {
-        for (int i=0; i < 3; i++) {
-            emails.add(null);
-        }
-    }
-
-    public ContactEmailData(String email, String email2, String email3) {
-        this.emails.add(email);
-        this.emails.add(email2);
-        this.emails.add(email3);
-    }
-
-    public ContactEmailData(List<WebElement> emailsList) {
-        for (int i=0; i < 3; i++) {
-            if (i < emailsList.size()) { this.emails.add(emailsList.get(i).getText());}
-            else { this.emails.add(null);}
-        }
-    }
+    private List<String> emails = new ArrayList<>(Arrays.asList(null, null, null));
 
     public String getEmail1() {
         return emails.get(0);
@@ -37,6 +19,29 @@ public class ContactEmailData {
 
     public String getEmail3() {
         return emails.get(2);
+    }
+
+    public ContactEmailData withEmail1(String email1) {
+        this.emails.set(0, email1);
+        return this;
+    }
+
+    public ContactEmailData withEmail2(String email2) {
+        this.emails.set(1, email2);
+        return this;
+    }
+
+    public ContactEmailData withEmail3(String email3) {
+        this.emails.set(2, email3);
+        return this;
+    }
+
+    public ContactEmailData withEmails(List<WebElement> emailsList) {
+        for (int i=0; i < 3; i++) {
+            if (i < emailsList.size()) { this.emails.add(emailsList.get(i).getText());}
+            else { this.emails.add(null);}
+        }
+        return this;
     }
 
     @Override

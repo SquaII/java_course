@@ -6,13 +6,6 @@ public class ContactNameData {
     private String lastName;
     private String nickName;
 
-    public ContactNameData(String firstName, String middleName, String lastName, String nickName) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.nickName = nickName;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -29,10 +22,24 @@ public class ContactNameData {
         return nickName;
     }
 
-    public void setFirstName(String firstName) {this.firstName = firstName; }
-    public void setMiddleName(String middleName) {this.middleName= middleName; }
-    public void setLastName(String lastName) {this.lastName = lastName; }
-    public void setNickName(String nickName) {this.nickName = nickName; }
+    public ContactNameData withFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public ContactNameData withMiddleName(String middleName) {
+        this.middleName= middleName;
+        return this;}
+
+    public ContactNameData withLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public ContactNameData withNickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
 
     @Override
     public String toString() {

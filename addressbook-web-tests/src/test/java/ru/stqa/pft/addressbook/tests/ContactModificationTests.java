@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.*;
 
@@ -9,27 +10,27 @@ import java.util.List;
 
 public class ContactModificationTests extends TestBase {
 
+    @BeforeMethod
+    public void ensurePreconditions() {
+        app.goTo().homePage();
+        if (! app.contact().isThereAContact()) {
+            app.contact().create(new ContactData()
+                    .withContactNameData(new ContactNameData().withFirstName("first").withLastName("last")));
+        }
+    }
+
     /* Тест редактирует первый контакт в списке контактов */
     @Test
     public void testContactModification() {
-        app.getNavigationHelper().gotoHomePage();
-
-        // prepare data
-        if (! app.getContactHelper().isThereAContact()) {
-            app.getContactHelper().createContact(new ContactData(new ContactNameData("first", null, "last", null)));
-        }
-        List<ContactData> before = app.getContactHelper().getContactList();
-        int contractId = app.getContactHelper().initContactModification();
+        List<ContactData> before = app.contact().list();
+        int contractId = app.contact().initContactModification();
         ContactData contact = getContactData();
-        contact.setId(contractId);
+        contact.withId(contractId);
 
-        // modify contact
-        app.getContactHelper().fillContactData(contact, false);
-        app.getContactHelper().submitContactModification();
-        app.getContactHelper().returnToHomePage();
+        app.contact().modify(contact);
 
         // check result
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<ContactData> after = app.contact().list();
         Assert.assertEquals(after.size(), before.size());
 
         before.remove(0);
@@ -39,11 +40,15 @@ public class ContactModificationTests extends TestBase {
     }
 
     private ContactData getContactData() {
-        ContactNameData nameData = new ContactNameData("first_name_mod", "middle_name_mod", "last_name_mod", "nick_name_mod");
-        ContactPhoneData phoneData = new ContactPhoneData("fax_mod", "work_mod", "mobile_mod", "home_mod");
-        ContactEmailData emailData = new ContactEmailData("email_mod", "email2_mod", "email3_mod");
-        ContactOtherData otherData = new ContactOtherData("title_mod", "company_mod", "address_mod");
-        return new ContactData(nameData, phoneData, emailData, otherData, null);
+        return new ContactData()
+                .withContactNameData(new ContactNameData()
+                        .withFirstName("first_name_mod").withMiddleName("middle_name_mod").withLastName("last_name_mod").withNickName("nick_name_mod"))
+                .withContactPhoneData(new ContactPhoneData()
+                        .withHome("home_mod").withMobile("mobile_mod").withWork("work_mod").withFax("fax_mod"))
+                .withContactEmailData(new ContactEmailData()
+                        .withEmail1("email_mod").withEmail2("email2_mod").withEmail3("email3_mod"))
+                .withContactOtherData(new ContactOtherData()
+                        .withTitle("title_mod").withCompany("company_mod").withAddress("address_mod"));
     }
 
 }

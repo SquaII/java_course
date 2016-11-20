@@ -5,18 +5,6 @@ public class ContactOtherData {
     private String company;
     private String address;
 
-    public ContactOtherData() {
-        this.title = null;
-        this.company = null;
-        this.address = null;
-    }
-
-    public ContactOtherData(String title, String company, String address) {
-        this.title = title;
-        this.company = company;
-        this.address = address;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -29,9 +17,20 @@ public class ContactOtherData {
         return address;
     }
 
-    public void setTitle(String title) { this.title = title; }
-    public void setCompany(String company) { this.company = company; }
-    public void setAddress(String address) { this.address = address; }
+    public ContactOtherData withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public ContactOtherData withCompany(String company) {
+        this.company = company;
+        return this;
+    }
+
+    public ContactOtherData withAddress(String address) {
+        this.address = address;
+        return this;
+    }
 
     @Override
     public String toString() {

@@ -2,37 +2,14 @@ package ru.stqa.pft.addressbook.model;
 
 public class ContactData {
     private int id;
-    private final ContactNameData contactNameData;
-    private final ContactPhoneData contactPhoneData;
-    private final ContactEmailData contactEmailData;
-    private final ContactOtherData contactOtherData;
+    private ContactNameData contactNameData;
+    private ContactPhoneData contactPhoneData;
+    private ContactEmailData contactEmailData;
+    private ContactOtherData contactOtherData;
     private String groupName;
-
-    public ContactData(ContactNameData contactNameData) {
-        this.id = 0;
-        this.contactNameData = contactNameData;
-        this.contactPhoneData = new ContactPhoneData();
-        this.contactEmailData = new ContactEmailData();
-        this.contactOtherData = new ContactOtherData();
-        this.groupName = null;
-    }
-
-    public ContactData(ContactNameData contactNameData, ContactPhoneData contactPhoneData, ContactEmailData contactEmailData,
-                       ContactOtherData contactOtherData, String groupName) {
-        this.id = 0;
-        this.contactNameData = contactNameData;
-        this.contactPhoneData = contactPhoneData;
-        this.contactEmailData = contactEmailData;
-        this.contactOtherData = contactOtherData;
-        this.groupName = groupName;
-    }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public ContactOtherData getContactOtherData(){
@@ -55,11 +32,41 @@ public class ContactData {
         return groupName;
     }
 
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public ContactData withContactNameData(ContactNameData contactNameData) {
+        this.contactNameData = contactNameData;
+        return this;
+    }
+
+    public ContactData withContactPhoneData(ContactPhoneData contactPhoneData) {
+        this.contactPhoneData = contactPhoneData;
+        return this;
+    }
+
+    public ContactData withContactEmailData(ContactEmailData contactEmailData) {
+        this.contactEmailData = contactEmailData;
+        return this;
+    }
+
+    public ContactData withContactOtherData(ContactOtherData contactOtherData) {
+        this.contactOtherData = contactOtherData;
+        return this;
+    }
+
+    public ContactData withGroupName(String groupName) {
+        this.groupName = groupName;
+        return this;
+    }
+
     public void convertToListData() {
-        this.contactNameData.setMiddleName(null);
-        this.contactNameData.setNickName(null);
-        this.contactOtherData.setTitle(null);
-        this.contactOtherData.setCompany(null);
+        this.contactNameData.withMiddleName(null);
+        this.contactNameData.withNickName(null);
+        this.contactOtherData.withTitle(null);
+        this.contactOtherData.withCompany(null);
         this.groupName = null;
     }
 

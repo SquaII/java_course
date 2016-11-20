@@ -90,11 +90,22 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    public void createContact(ContactData contactData) {
+    public void create(ContactData contactData) {
         initContactCreation();
         fillContactData(contactData, true);
         submitContactCreation();
         returnToHomePage();
+    }
+
+    public void modify(ContactData contact) {
+        fillContactData(contact, false);
+        submitContactModification();
+        returnToHomePage();
+    }
+
+    public void delete() {
+        selectContact();
+        deleteSelectedContact();
     }
 
     public void returnToHomePage() {
@@ -105,7 +116,7 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.xpath("//table[@id='maintable']//tr[@name='entry']"));
         /*
@@ -115,27 +126,24 @@ public class ContactHelper extends HelperBase {
         */
         for (WebElement element : elements){
             WebElement phonesData = element.findElement(By.xpath("td[6]"));
-            ContactPhoneData phoneData = new ContactPhoneData(phonesData);
+            ContactPhoneData phoneData = new ContactPhoneData().withPhones(phonesData);
 
             List<WebElement> emailsList = new ArrayList<>();
             try {
                 emailsList = element.findElements(By.xpath("td[5]/a"));     // no emails for contact
             }
             catch (NoSuchElementException ex) {}
-            ContactEmailData emailData = new ContactEmailData(emailsList);
+            ContactEmailData emailData = new ContactEmailData().withEmails(emailsList);
 
             String lastName = element.findElement(By.xpath("td[2]")).getText();
             String firstName = element.findElement(By.xpath("td[3]")).getText();
-            ContactData contactData = new ContactData(
-                    new ContactNameData(firstName, null, lastName, null),
-                    phoneData,
-                    emailData,
-                    null,
-                    null
-            );
+            ContactData contactData = new ContactData()
+                    .withContactNameData(new ContactNameData().withFirstName(firstName).withLastName(lastName))
+                    .withContactPhoneData(phoneData)
+                    .withContactEmailData(emailData);
             contacts.add(contactData);
 
-            contactData.setId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")));
+            contactData.withId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")));
         }
         return contacts;
     }

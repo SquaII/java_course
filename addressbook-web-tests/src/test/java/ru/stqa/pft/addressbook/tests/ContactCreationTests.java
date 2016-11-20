@@ -11,29 +11,32 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void testContactCreation() {
-        // prepare data
-        List<ContactData> before = app.getContactHelper().getContactList();
+        List<ContactData> before = app.contact().list();
         ContactData contact = getContactData();
 
-        // create contact
-        app.getContactHelper().createContact(contact);
+        app.contact().create(contact);
 
         // check result
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<ContactData> after = app.contact().list();
         Assert.assertEquals(after.size(), before.size() + 1);
 
-        contact.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
+        contact.withId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
         contact.convertToListData();
         before.add(contact);
         Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
     }
 
     private ContactData getContactData() {
-        ContactNameData nameData = new ContactNameData("first_name", "middle_name", "last_name", "nick_name");
-        ContactPhoneData phoneData = new ContactPhoneData("fax", "work", "mobile", "home");
-        ContactEmailData emailData = new ContactEmailData("email", "email2", "email3");
-        ContactOtherData otherData = new ContactOtherData("title", "company", "address");
-        return new ContactData(nameData, phoneData, emailData, otherData, "test1");
+        return new ContactData()
+                .withContactNameData(new ContactNameData()
+                        .withFirstName("first_name").withMiddleName("middle_name").withLastName("last_name").withNickName("nick_name"))
+                .withContactPhoneData(new ContactPhoneData()
+                        .withHome("home").withMobile("mobile").withWork("work").withFax("fax"))
+                .withContactEmailData(new ContactEmailData()
+                        .withEmail1("email").withEmail2("email2").withEmail3("email3"))
+                .withContactOtherData(new ContactOtherData()
+                        .withTitle("title").withCompany("company").withAddress("address"))
+                .withGroupName("test1");
     }
 
 }

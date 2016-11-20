@@ -3,31 +3,11 @@ package ru.stqa.pft.addressbook.model;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ContactPhoneData {
-    private List<String> phones = new ArrayList<>();
-
-    public ContactPhoneData() {
-        for (int i=0; i < 4; i++) {
-            phones.add(null);
-        }
-    }
-
-    public ContactPhoneData(String home, String mobile, String work, String fax) {
-        this.phones.add(home);
-        this.phones.add(mobile);
-        this.phones.add(work);
-        this.phones.add(fax);
-    }
-
-    public ContactPhoneData(WebElement phonesData) {
-        String[] phonesList = phonesData.getText().split("\n");
-        for (int i=0; i < 4; i++) {
-            if (i < phonesList.length && phonesList[i].equals("")) { this.phones.add(phonesList[i]);}
-            else { this.phones.add(null);}
-        }
-    }
+    private List<String> phones = new ArrayList<>(Arrays.asList(null, null, null, null));
 
     public String getFax() {
         return phones.get(3);
@@ -43,6 +23,35 @@ public class ContactPhoneData {
 
     public String getHome() {
         return phones.get(0);
+    }
+
+    public ContactPhoneData withFax(String fax) {
+        this.phones.set(3, fax);
+        return this;
+    }
+
+    public ContactPhoneData withWork(String work) {
+        this.phones.set(2, work);
+        return this;
+    }
+
+    public ContactPhoneData withMobile(String mobile) {
+        this.phones.set(1, mobile);
+        return this;
+    }
+
+    public ContactPhoneData withHome(String home) {
+        this.phones.set(0, home);
+        return this;
+    }
+
+    public ContactPhoneData withPhones(WebElement phonesData) {
+        String[] phonesList = phonesData.getText().split("\n");
+        for (int i=0; i < 4; i++) {
+            if (i < phonesList.length && phonesList[i].equals("")) { this.phones.add(phonesList[i]);}
+            else { this.phones.add(null);}
+        }
+        return this;
     }
 
     @Override
