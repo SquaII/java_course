@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ContactEmailData {
     private List<String> emails = new ArrayList<>(Arrays.asList(null, null, null));
+    public boolean isListData = false;
 
     public String getEmail1() {
         return emails.get(0);
@@ -37,9 +38,8 @@ public class ContactEmailData {
     }
 
     public ContactEmailData withEmails(List<WebElement> emailsList) {
-        for (int i=0; i < 3; i++) {
-            if (i < emailsList.size()) { this.emails.add(emailsList.get(i).getText());}
-            else { this.emails.add(null);}
+        for (int i=0; i < emailsList.size(); i++) {
+            this.emails.set(i, emailsList.get(i).getText());
         }
         return this;
     }
@@ -57,18 +57,26 @@ public class ContactEmailData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        ContactEmailData emailData = (ContactEmailData) o;
-
-        return emails != null ? emails.equals(emailData.emails) : emailData.emails == null;
-
+        ContactEmailData that = (ContactEmailData) o;
+        if (this.isListData) {
+            return emails != null ? this.hashCode() == that.hashCode() : that.emails == null;
+        } else {
+            return emails != null ? emails.equals(that.emails) : that.emails == null;
+        }
     }
 
     @Override
     public int hashCode() {
-        int result = getEmail1() != null ? getEmail1().hashCode() : 0;
-        result = 31 * result + (getEmail2() != null ? getEmail2().hashCode() : 0);
-        result = 31 * result + (getEmail3() != null ? getEmail3().hashCode() : 0);
+        int result = 1;
+        if (this.isListData) {
+            result = result + 31 * (getEmail1() != null ? getEmail1().hashCode() : 0);
+            result = result + 31 * (getEmail2() != null ? getEmail2().hashCode() : 0);
+            result = result + 31 * (getEmail3() != null ? getEmail3().hashCode() : 0);
+        } else {
+            result = 31 * result + (getEmail1() != null ? getEmail1().hashCode() : 0);
+            result = 31 * result + (getEmail2() != null ? getEmail2().hashCode() : 0);
+            result = 31 * result + (getEmail3() != null ? getEmail3().hashCode() : 0);
+        }
         return result;
     }
 }

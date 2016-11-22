@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ContactPhoneData {
     private List<String> phones = new ArrayList<>(Arrays.asList(null, null, null, null));
+    public boolean isListData = false;
 
     public String getFax() {
         return phones.get(3);
@@ -47,9 +48,9 @@ public class ContactPhoneData {
 
     public ContactPhoneData withPhones(WebElement phonesData) {
         String[] phonesList = phonesData.getText().split("\n");
-        for (int i=0; i < 4; i++) {
-            if (i < phonesList.length && phonesList[i].equals("")) { this.phones.add(phonesList[i]);}
-            else { this.phones.add(null);}
+        for (int i = 0; i < phonesList.length; i++) {
+            if (! phonesList[i].equals("")) { this.phones.set(i, phonesList[i]); }
+            else { this.phones.add(null); }
         }
         return this;
     }
@@ -68,19 +69,28 @@ public class ContactPhoneData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ContactPhoneData that = (ContactPhoneData) o;
-
-        return phones != null ? phones.equals(that.phones) : that.phones == null;
-
+        if (this.isListData) {
+            return phones != null ? this.hashCode() == that.hashCode() : that.phones == null;
+        } else {
+            return phones != null ? phones.equals(that.phones) : that.phones == null;
+        }
     }
 
     @Override
     public int hashCode() {
-        int result = getHome() != null ? getHome().hashCode() : 0;
-        result = 31 * result + (getWork() != null ? getWork().hashCode() : 0);
-        result = 31 * result + (getMobile() != null ? getMobile().hashCode() : 0);
-        result = 31 * result + (getFax() != null ? getFax().hashCode() : 0);
+        int result = 1;
+        if (this.isListData) {
+            result = result + 31 * (getHome() != null ? getHome().hashCode() : 0);
+            result = result + 31 * (getWork() != null ? getWork().hashCode() : 0);
+            result = result + 31 * (getMobile() != null ? getMobile().hashCode() : 0);
+            result = result + 31 * (getFax() != null ? getFax().hashCode() : 0);
+        } else {
+            result = 31 * result + (getHome() != null ? getHome().hashCode() : 0);
+            result = 31 * result + (getWork() != null ? getWork().hashCode() : 0);
+            result = 31 * result + (getMobile() != null ? getMobile().hashCode() : 0);
+            result = 31 * result + (getFax() != null ? getFax().hashCode() : 0);
+        }
         return result;
     }
 

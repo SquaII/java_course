@@ -65,6 +65,7 @@ public class ContactData {
     public void convertToListData() {
         this.contactNameData.withMiddleName(null);
         this.contactNameData.withNickName(null);
+        this.contactPhoneData.withFax(null);
         this.contactOtherData.withTitle(null);
         this.contactOtherData.withCompany(null);
         this.groupName = null;
@@ -78,7 +79,15 @@ public class ContactData {
         ContactData that = (ContactData) o;
 
         if (id != that.id) return false;
-        return contactNameData != null ? contactNameData.equals(that.contactNameData) : that.contactNameData == null;
+        if (contactNameData != null ? !contactNameData.equals(that.contactNameData) : that.contactNameData != null)
+            return false;
+        if (contactPhoneData != null ? !contactPhoneData.equals(that.contactPhoneData) : that.contactPhoneData != null)
+            return false;
+        if (contactEmailData != null ? !contactEmailData.equals(that.contactEmailData) : that.contactEmailData != null)
+            return false;
+        if (contactOtherData != null ? !contactOtherData.equals(that.contactOtherData) : that.contactOtherData != null)
+            return false;
+        return groupName != null ? groupName.equals(that.groupName) : that.groupName == null;
 
     }
 
@@ -86,6 +95,10 @@ public class ContactData {
     public int hashCode() {
         int result = id;
         result = 31 * result + (contactNameData != null ? contactNameData.hashCode() : 0);
+        result = 31 * result + (contactPhoneData != null ? contactPhoneData.hashCode() : 0);
+        result = 31 * result + (contactEmailData != null ? contactEmailData.hashCode() : 0);
+        result = 31 * result + (contactOtherData != null ? contactOtherData.hashCode() : 0);
+        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
         return result;
     }
 
