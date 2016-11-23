@@ -70,10 +70,6 @@ public class ContactHelper extends HelperBase {
         type(By.name("nickname"), contactNameData.getNickName());
     }
 
-    public void selectContact() {
-        click(By.name("selected[]"));
-    }
-
     public void selectContactById(int id) {
         wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
@@ -95,6 +91,7 @@ public class ContactHelper extends HelperBase {
         initContactCreation();
         fillContactData(contactData, true);
         submitContactCreation();
+        contactCache = null;
         returnToHomePage();
     }
 
@@ -102,17 +99,14 @@ public class ContactHelper extends HelperBase {
         initContactModification(contact.getId());
         fillContactData(contact, false);
         submitContactModification();
+        contactCache = null;
         returnToHomePage();
-    }
-
-    public void delete() {
-        selectContact();
-        deleteSelectedContact();
     }
 
     public void delete(ContactData contact) {
         selectContactById(contact.getId());
         deleteSelectedContact();
+        contactCache = null;
     }
 
     public void returnToHomePage() {
@@ -123,40 +117,14 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public List<ContactData> list() {
-        List<ContactData> contacts = new ArrayList<ContactData>();
-        List<WebElement> elements = wd.findElements(By.xpath("//table[@id='maintable']//tr[@name='entry']"));
-        /*
-            Достаем данные о контактах, перебирая строки таблицы.
-            Так как смотрим строки, то мы не натыкаемся на лишние теги td,
-                поэтому можно использовать глобальный поиск по элементу-строке (без //).
-        */
-        for (WebElement element : elements){
-            WebElement phonesData = element.findElement(By.xpath("td[6]"));
-            ContactPhoneData phoneData = new ContactPhoneData().withPhones(phonesData);
-
-            List<WebElement> emailsList = new ArrayList<>();
-            try {
-                emailsList = element.findElements(By.xpath("td[5]/a"));     // no emails for contact
-            }
-            catch (NoSuchElementException ex) {}
-            ContactEmailData emailData = new ContactEmailData().withEmails(emailsList);
-
-            String lastName = element.findElement(By.xpath("td[2]")).getText();
-            String firstName = element.findElement(By.xpath("td[3]")).getText();
-            ContactData contactData = new ContactData()
-                    .withContactNameData(new ContactNameData().withFirstName(firstName).withLastName(lastName))
-                    .withContactPhoneData(phoneData)
-                    .withContactEmailData(emailData);
-            contacts.add(contactData);
-
-            contactData.withId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")));
-        }
-        return contacts;
-    }
+    private Contacts contactCache = null;
 
     public Contacts all() {
-        Contacts contacts = new Contacts();
+        if (contactCache != null) {
+            return new Contacts(contactCache);
+        }
+
+        contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.xpath("//table[@id='maintable']//tr[@name='entry']"));
         for (WebElement element : elements){
             WebElement phonesData = element.findElement(By.xpath("td[6]"));
@@ -181,9 +149,9 @@ public class ContactHelper extends HelperBase {
                     .withContactEmailData(emailData)
                     .withContactOtherData(new ContactOtherData().withAddress(address));
 
-            contacts.add(contactData);
+            contactCache.add(contactData);
         }
-        return contacts;
+        return new Contacts(contactCache);
     }
 
 }
