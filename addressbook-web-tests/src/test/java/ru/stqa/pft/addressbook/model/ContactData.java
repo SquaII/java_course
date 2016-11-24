@@ -7,6 +7,7 @@ public class ContactData {
     private ContactEmailData contactEmailData;
     private ContactOtherData contactOtherData;
     private String groupName;
+    private boolean isListData = false;
 
     public int getId() {
         return id;
@@ -43,12 +44,12 @@ public class ContactData {
     }
 
     public ContactData withContactPhoneData(ContactPhoneData contactPhoneData) {
-        this.contactPhoneData = contactPhoneData;
+        this.contactPhoneData = contactPhoneData.withAsListData(this.isListData);
         return this;
     }
 
     public ContactData withContactEmailData(ContactEmailData contactEmailData) {
-        this.contactEmailData = contactEmailData;
+        this.contactEmailData = contactEmailData.withAsListData(this.isListData);
         return this;
     }
 
@@ -62,13 +63,25 @@ public class ContactData {
         return this;
     }
 
-    public void convertToListData() {
-        this.contactNameData.withMiddleName(null);
-        this.contactNameData.withNickName(null);
-        this.contactPhoneData.withFax(null);
-        this.contactOtherData.withTitle(null);
-        this.contactOtherData.withCompany(null);
-        this.groupName = null;
+    public ContactData withAsListData(boolean flag) {
+        this.isListData = flag;
+        return this;
+    }
+
+    public ContactData getListData() {
+        ContactData contactData = new ContactData().withAsListData(true)
+            .withId(this.id)
+            .withContactNameData(new ContactNameData()
+                .withFirstName(this.contactNameData.getFirstName()).withLastName(this.contactNameData.getLastName()))
+            .withContactEmailData(new ContactEmailData()
+                .withEmail1(this.contactEmailData.getEmail1())
+                .withEmail2(this.contactEmailData.getEmail2())
+                .withEmail3(this.contactEmailData.getEmail3()))
+            .withContactPhoneData(new ContactPhoneData()
+                .withHome(this.contactPhoneData.getHome()).withMobile(this.contactPhoneData.getMobile())
+                .withWork(this.contactPhoneData.getWork()).withHome2(this.contactPhoneData.getHome2()).withCleanPhones())
+            .withContactOtherData(new ContactOtherData().withAddress(this.getContactOtherData().getAddress()));
+        return contactData;
     }
 
     @Override

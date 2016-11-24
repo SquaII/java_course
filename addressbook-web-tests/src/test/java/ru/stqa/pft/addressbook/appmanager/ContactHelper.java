@@ -48,6 +48,9 @@ public class ContactHelper extends HelperBase {
         type(By.name("title"), contactOtherData.getTitle());
         type(By.name("company"), contactOtherData.getCompany());
         type(By.name("address"), contactOtherData.getAddress());
+        type(By.name("address2"), contactOtherData.getAddress2());
+        type(By.name("homepage"), contactOtherData.getHomepage());
+        type(By.name("notes"), contactOtherData.getNotes());
     }
 
     public void fillContactEmails(ContactEmailData contactEmailData) {
@@ -61,6 +64,7 @@ public class ContactHelper extends HelperBase {
         type(By.name("mobile"), contactPhoneData.getMobile());
         type(By.name("work"), contactPhoneData.getWork());
         type(By.name("fax"), contactPhoneData.getFax());
+        type(By.name("phone2"), contactPhoneData.getHome2());
     }
 
     public void fillContactNames(ContactNameData contactNameData) {
@@ -129,7 +133,6 @@ public class ContactHelper extends HelperBase {
         for (WebElement element : elements){
             WebElement phonesData = element.findElement(By.xpath("td[6]"));
             ContactPhoneData phoneData = new ContactPhoneData().withPhones(phonesData);
-            phoneData.isListData = true;
 
             List<WebElement> emailsList = new ArrayList<>();
             try {
@@ -137,12 +140,11 @@ public class ContactHelper extends HelperBase {
             }
             catch (NoSuchElementException ex) {}
             ContactEmailData emailData = new ContactEmailData().withEmails(emailsList);
-            emailData.isListData = true;
 
             String lastName = element.findElement(By.xpath("td[2]")).getText();
             String firstName = element.findElement(By.xpath("td[3]")).getText();
             String address = element.findElement(By.xpath("td[4]")).getText();
-            ContactData contactData = new ContactData()
+            ContactData contactData = new ContactData().withAsListData(true)
                     .withId(Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id")))
                     .withContactNameData(new ContactNameData().withFirstName(firstName).withLastName(lastName))
                     .withContactPhoneData(phoneData)

@@ -28,23 +28,18 @@ public class ContactModificationTests extends TestBase {
         Contacts after = app.contact().all();
         assertThat(after.size(), equalTo(before.size()));
 
-        before.remove(modifiedContact);
-        contact.convertToListData();
-        before.add(contact);
-        assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
+        assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact.getListData())));
     }
 
     private ContactData getContactData(int id) {
-        ContactPhoneData phoneData= new ContactPhoneData().withHome("home_mod").withWork("work_mod").withFax("fax_mod");
-        phoneData.isListData = true;
-        ContactEmailData emailData = new ContactEmailData().withEmail2("email2_mod").withEmail3("email3_mod");
-        emailData.isListData = true;
-        return new ContactData()
+        return new ContactData().withAsListData(true)
                 .withId(id)
                 .withContactNameData(new ContactNameData()
                         .withFirstName("first_name_mod").withMiddleName("middle_name_mod").withLastName("last_name_mod").withNickName("nick_name_mod"))
-                .withContactPhoneData(phoneData)
-                .withContactEmailData(emailData)
+                .withContactPhoneData(new ContactPhoneData()
+                        .withHome("home_mod").withWork("work_mod").withFax("fax_mod"))
+                .withContactEmailData(new ContactEmailData()
+                        .withEmail2("email2_mod").withEmail3("email3_mod"))
                 .withContactOtherData(new ContactOtherData()
                         .withTitle("title_mod").withCompany("company_mod").withAddress("address_mod"));
     }

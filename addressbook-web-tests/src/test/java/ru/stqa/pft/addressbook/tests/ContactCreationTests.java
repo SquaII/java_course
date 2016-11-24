@@ -15,22 +15,20 @@ public class ContactCreationTests extends TestBase {
         app.contact().create(contact);
         Contacts after = app.contact().all();
         assertThat(after.size(), equalTo(before.size() + 1));
-        contact.convertToListData();
-        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
+        assertThat(after, equalTo(before.withAdded(contact.getListData().withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
     }
 
     private ContactData getContactData() {
-        ContactPhoneData phoneData= new ContactPhoneData().withHome("home").withMobile("mobile").withWork("work").withFax("fax");
-        phoneData.isListData = true;
-        ContactEmailData emailData = new ContactEmailData().withEmail1("email").withEmail2("email2").withEmail3("email3");
-        emailData.isListData = true;
-        return new ContactData()
+        return new ContactData().withAsListData(true)
                 .withContactNameData(new ContactNameData()
                         .withFirstName("first_name").withMiddleName("middle_name").withLastName("last_name").withNickName("nick_name"))
-                .withContactPhoneData(phoneData)
-                .withContactEmailData(emailData)
+                .withContactPhoneData(new ContactPhoneData()
+                        .withHome("home").withMobile("mobile").withWork("work").withFax("fax").withHome2("home2"))
+                .withContactEmailData(new ContactEmailData()
+                        .withEmail1("email").withEmail2("email2").withEmail3("email3"))
                 .withContactOtherData(new ContactOtherData()
-                        .withTitle("title").withCompany("company").withAddress("address"))
+                        .withTitle("title").withCompany("company").withAddress("address")
+                        .withAddress2("address2").withHomepage("homepage").withNotes("notes"))
                 .withGroupName("test1");
     }
 

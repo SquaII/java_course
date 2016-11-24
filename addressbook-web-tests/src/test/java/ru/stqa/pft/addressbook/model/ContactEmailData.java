@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ContactEmailData {
     private List<String> emails = new ArrayList<>(Arrays.asList(null, null, null));
-    public boolean isListData = false;
+    private boolean isListData = false;
 
     public String getEmail1() {
         return emails.get(0);
@@ -41,6 +41,11 @@ public class ContactEmailData {
         for (int i=0; i < emailsList.size(); i++) {
             this.emails.set(i, emailsList.get(i).getText());
         }
+        return this;
+    }
+
+    public ContactEmailData withAsListData(boolean flag) {
+        this.isListData = flag;
         return this;
     }
 
