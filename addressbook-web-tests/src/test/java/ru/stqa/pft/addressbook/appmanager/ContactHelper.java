@@ -10,6 +10,8 @@ import ru.stqa.pft.addressbook.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ContactHelper extends HelperBase {
 
@@ -87,6 +89,10 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.xpath("//table[@id='maintable']//*[@href='edit.php?id=" + id + "']")).click();
     }
 
+    public void viewDetails(int id) {
+        wd.findElement(By.xpath("//table[@id='maintable']//*[@href='view.php?id=" + id + "']")).click();
+    }
+
     public void submitContactModification() {
         click(By.name("update"));
     }
@@ -154,6 +160,66 @@ public class ContactHelper extends HelperBase {
             contactCache.add(contactData);
         }
         return new Contacts(contactCache);
+    }
+
+    public boolean checkDetails(ContactData c) {
+        String contactHTML = wd.findElement(By.xpath("//div[@id='content']")).getAttribute("innerHTML");
+        String expectedHTML = String.format("<b>%s%s%s</b><br>", c.getFirstName() + " " , c.getMiddleName() + " ", c.getLastName());
+        if (c.getNickName() != null && !c.getNickName().equals("")) {
+            expectedHTML = expectedHTML + String.format("%s<br>", c.getNickName());
+        }
+        if (c.getTitle() != null && !c.getTitle().equals("")) {
+            expectedHTML = expectedHTML + String.format("<i>%s<br></i>", c.getTitle());
+        }
+        if (c.getCompany() != null && !c.getCompany().equals("")) {
+            expectedHTML = expectedHTML +String.format("%s<br>", c.getCompany());
+        }
+        if (c.getAddress() != null && !c.getAddress().equals("")) {
+            expectedHTML = expectedHTML + String.format("%s<br>", c.getAddress());
+        }
+        expectedHTML = expectedHTML + " <br>";
+        if (c.getHomePhone() != null && !c.getHomePhone().equals("")) {
+            expectedHTML = expectedHTML + String.format("H: %s<br>", c.getHomePhone());
+        }
+        if (c.getMobilePhone() != null && !c.getMobilePhone().equals("")) {
+            expectedHTML = expectedHTML + String.format("M: %s<br>", c.getMobilePhone());
+        }
+        if (c.getWorkPhone() != null && !c.getWorkPhone().equals("")) {
+            expectedHTML = expectedHTML + String.format("W: %s<br>", c.getWorkPhone());
+        }
+        if (c.getFax() != null && !c.getFax().equals("")) {
+            expectedHTML = expectedHTML + String.format("F: %s<br>", c.getFax());
+        }
+        expectedHTML = expectedHTML + " <br>";
+        if (c.getEmail1() != null && !c.getEmail1().equals("")) {
+            expectedHTML = expectedHTML + String.format("<a href=\"mailto:%s\">%s</a><br>", c.getEmail1(), c.getEmail1());
+        }
+        if (c.getEmail2() != null && !c.getEmail2().equals("")) {
+            expectedHTML = expectedHTML + String.format("<a href=\"mailto:%s\">%s</a><br>", c.getEmail2(), c.getEmail2());
+        }
+        if (c.getEmail3() != null && !c.getEmail3().equals("")) {
+            expectedHTML = expectedHTML + String.format("<a href=\"mailto:%s\">%s</a><br>", c.getEmail3(), c.getEmail3());
+        }
+        if (c.getHomepage() != null && !c.getHomepage().equals("")) {
+            expectedHTML = expectedHTML + String.format("<label>Homepage:</label><a href=\"http://%s\">%s</a><br> <br>",
+                c.getHomepage(), c.getHomepage());
+        }
+        expectedHTML = expectedHTML + " <br>";
+        if (c.getAddress2() != null && !c.getAddress2().equals("")) {
+            expectedHTML = expectedHTML + String.format("%s<br>", c.getAddress2());
+        }
+        if (c.getHomePhone2() != null && !c.getHomePhone2().equals("")) {
+            expectedHTML = expectedHTML + String.format(" <br>P: %s<br><br>", c.getHomePhone2());
+        }
+        if (c.getNotes() != null && !c.getNotes().equals("")) {
+            expectedHTML = expectedHTML + String.format("notes<br><br>\n<br>", c.getNotes());
+        }
+        if (c.getGroupName() != null && !c.getGroupName().equals("")) {
+            expectedHTML = expectedHTML + String.format("<i>Member of: <a href=\"./index.php\\?group=[0-9]+\">%s</a></i>\t\n<br>",
+                c.getGroupName());
+        }
+        Matcher result =  Pattern.compile(expectedHTML).matcher(contactHTML);
+        return result.find();
     }
 
 }

@@ -13,6 +13,78 @@ public class ContactData {
         return id;
     }
 
+    public String getFirstName() {
+        return contactNameData.getFirstName();
+    }
+
+    public String getMiddleName() {
+        return contactNameData.getMiddleName();
+    }
+
+    public String getLastName() {
+        return contactNameData.getLastName();
+    }
+
+    public String getNickName() {
+        return contactNameData.getNickName();
+    }
+
+    public String getEmail1() {
+        return contactEmailData.getEmail1();
+    }
+
+    public String getEmail2() {
+        return contactEmailData.getEmail2();
+    }
+
+    public String getEmail3() {
+        return contactEmailData.getEmail3();
+    }
+
+    public String getHomePhone() {
+        return contactPhoneData.getHome();
+    }
+
+    public String getHomePhone2() {
+        return contactPhoneData.getHome2();
+    }
+
+    public String getFax() {
+        return contactPhoneData.getFax();
+    }
+
+    public String getMobilePhone() {
+        return contactPhoneData.getMobile();
+    }
+
+    public String getWorkPhone() {
+        return contactPhoneData.getWork();
+    }
+
+    public String getAddress() {
+        return contactOtherData.getAddress();
+    }
+
+    public String getAddress2() {
+        return contactOtherData.getAddress2();
+    }
+
+    public String getTitle() {
+        return contactOtherData.getTitle();
+    }
+
+    public String getHomepage() {
+        return contactOtherData.getHomepage();
+    }
+
+    public String getCompany() {
+        return contactOtherData.getCompany();
+    }
+
+    public String getNotes() {
+        return contactOtherData.getNotes();
+    }
+
     public ContactOtherData getContactOtherData(){
         return contactOtherData;
     }
@@ -69,19 +141,18 @@ public class ContactData {
     }
 
     public ContactData getListData() {
-        ContactData contactData = new ContactData().withAsListData(true)
-            .withId(this.id)
+        return new ContactData().withAsListData(true)
+            .withId(id)
             .withContactNameData(new ContactNameData()
-                .withFirstName(this.contactNameData.getFirstName()).withLastName(this.contactNameData.getLastName()))
+                .withFirstName(getFirstName()).withLastName(getLastName()))
             .withContactEmailData(new ContactEmailData()
-                .withEmail1(this.contactEmailData.getEmail1())
-                .withEmail2(this.contactEmailData.getEmail2())
-                .withEmail3(this.contactEmailData.getEmail3()))
+                .withEmail1(getEmail1())
+                .withEmail2(getEmail2())
+                .withEmail3(getEmail3()))
             .withContactPhoneData(new ContactPhoneData()
-                .withHome(this.contactPhoneData.getHome()).withMobile(this.contactPhoneData.getMobile())
-                .withWork(this.contactPhoneData.getWork()).withHome2(this.contactPhoneData.getHome2()).withCleanPhones())
-            .withContactOtherData(new ContactOtherData().withAddress(this.getContactOtherData().getAddress()));
-        return contactData;
+                .withHome(getHomePhone()).withMobile(getMobilePhone())
+                .withWork(getWorkPhone()).withHome2(getHomePhone2()).withCleanPhones())
+            .withContactOtherData(new ContactOtherData().withAddress(getContactOtherData().getAddress()));
     }
 
     @Override
