@@ -4,6 +4,8 @@ import org.hamcrest.core.Is;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.*;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -24,6 +26,7 @@ public class ContactCreationTests extends TestBase {
     }
 
     private ContactData getContactData() {
+        File photo = new File("src/test/resources/photo.gif");
         return new ContactData().withAsListData(true)
                 .withContactNameData(new ContactNameData()
                         .withFirstName("first_name").withMiddleName("middle_name").withLastName("last_name").withNickName("nick_name"))
@@ -34,7 +37,8 @@ public class ContactCreationTests extends TestBase {
                 .withContactOtherData(new ContactOtherData()
                         .withTitle("title").withCompany("company").withAddress("address")
                         .withAddress2("address2").withHomepage("homepage").withNotes("notes"))
-                .withGroupName("test1");
+                .withGroupName("test1")
+                .withPhoto(photo);
     }
 
 }
