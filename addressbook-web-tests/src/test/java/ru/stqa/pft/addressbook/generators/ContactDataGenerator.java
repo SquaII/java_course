@@ -58,18 +58,18 @@ public class ContactDataGenerator {
         String pattern = "\"photo\": \\{\"src/test/resources/photo.gif\"\\}";
         json = json.replaceAll(regex, pattern);
         //
-        Writer writer = new FileWriter(file);
-        writer.write(json);
-        writer.close();
+        try (Writer writer = new FileWriter(file)) {
+            writer.write(json);
+        }
     }
 
     private void saveAsXML(List<ContactData> contacts, File file) throws IOException {
         XStream xstream = new XStream();
         xstream.processAnnotations(ContactData.class);
         String xml = xstream.toXML(contacts);
-        Writer writer = new FileWriter(file);
-        writer.write(xml);
-        writer.close();
+        try (Writer writer = new FileWriter(file)) {
+            writer.write(xml);
+        }
     }
 
     private List<ContactData> generateContacts(int count) {
