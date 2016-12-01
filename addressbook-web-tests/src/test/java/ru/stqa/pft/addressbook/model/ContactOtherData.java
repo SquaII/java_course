@@ -1,11 +1,19 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+
 public class ContactOtherData {
+    @Expose
     private String title;
+    @Expose
     private String company;
+    @Expose
     private String address = "";
+    @Expose
     private String address2;
+    @Expose
     private String homepage;
+    @Expose
     private String notes;
 
     public String getTitle() {
@@ -24,9 +32,13 @@ public class ContactOtherData {
         return address2;
     }
 
-    public String getHomepage() { return homepage; }
+    public String getHomepage() {
+        return homepage;
+    }
 
-    public String getNotes() { return notes; }
+    public String getNotes() {
+        return notes;
+    }
 
     public ContactOtherData withTitle(String title) {
         this.title = title;

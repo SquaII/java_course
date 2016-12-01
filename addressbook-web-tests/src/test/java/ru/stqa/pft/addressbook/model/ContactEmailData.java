@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -7,7 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ContactEmailData {
+    @Expose
     private List<String> emails = new ArrayList<>(Arrays.asList(null, null, null));
+
+    @XStreamOmitField
     private boolean isListData = false;
 
     public String getEmail1() {
@@ -38,7 +43,7 @@ public class ContactEmailData {
     }
 
     public ContactEmailData withEmails(List<WebElement> emailsList) {
-        for (int i=0; i < emailsList.size(); i++) {
+        for (int i = 0; i < emailsList.size(); i++) {
             this.emails.set(i, emailsList.get(i).getText());
         }
         return this;

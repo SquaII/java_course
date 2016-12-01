@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -7,7 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ContactPhoneData {
+    @Expose
     private List<String> phones = new ArrayList<>(Arrays.asList(null, null, null, null, null));
+
+    @XStreamOmitField
     private boolean isListData = false;
 
     public String getFax() {
@@ -70,9 +75,9 @@ public class ContactPhoneData {
     }
 
     public ContactPhoneData withCleanPhones() {
-        for (String phone : this.phones) {
-            if (phone != null) {
-                phone.replaceAll("\\s", "").replaceAll("[-()]", "");
+        for (int i = 0; i < this.phones.size(); i++) {
+            if (phones.get(i) != null) {
+                phones.set(i, phones.get(i).replaceAll("\\s", "").replaceAll("[-()]", ""));
             }
         }
         return this;

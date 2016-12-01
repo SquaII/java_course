@@ -171,7 +171,7 @@ public class ContactHelper extends HelperBase {
             expectedHTML = expectedHTML + String.format("%s<br>", c.getNickName());
         }
         if (c.getPhoto() != null && !c.getPhoto().equals("")) {
-            expectedHTML = expectedHTML + String.format("<img alt=\"Embedded Image\" src=\"data:image.+><br>");
+            expectedHTML = expectedHTML + String.format("<img alt=\"Embedded Image\" src=.+><br>");
         }
         if (c.getTitle() != null && !c.getTitle().equals("")) {
             expectedHTML = expectedHTML + String.format("<i>%s<br></i>", c.getTitle());
@@ -217,10 +217,10 @@ public class ContactHelper extends HelperBase {
             expectedHTML = expectedHTML + String.format(" <br>P: %s<br><br>", c.getHomePhone2());
         }
         if (c.getNotes() != null && !c.getNotes().equals("")) {
-            expectedHTML = expectedHTML + String.format("notes<br><br>\n<br>", c.getNotes());
+            expectedHTML = expectedHTML + String.format("%s<br><br>", c.getNotes());
         }
         if (c.getGroupName() != null && !c.getGroupName().equals("")) {
-            expectedHTML = expectedHTML + String.format("<i>Member of: <a href=\"./index.php\\?group=[0-9]+\">%s</a></i>\t\n<br>",
+            expectedHTML = expectedHTML + String.format("\n<br><i>Member of: <a href=\"./index.php\\?group=[0-9]+\">%s</a></i>\t\n<br>",
                 c.getGroupName());
         }
         Matcher result =  Pattern.compile(expectedHTML).matcher(contactHTML);

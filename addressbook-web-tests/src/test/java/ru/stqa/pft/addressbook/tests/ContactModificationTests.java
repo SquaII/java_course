@@ -37,7 +37,7 @@ public class ContactModificationTests extends TestBase {
 
     private ContactData getContactData(int id) {
         File photo = new File("src/test/resources/photo.gif");
-        return new ContactData().withAsListData(true)
+        return new ContactData()
                 .withId(id)
                 .withPhoto(photo)
                 .withContactNameData(new ContactNameData()

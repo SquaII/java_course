@@ -1,9 +1,15 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+
 public class ContactNameData {
+    @Expose
     private String firstName;
+    @Expose
     private String middleName;
+    @Expose
     private String lastName;
+    @Expose
     private String nickName;
 
     public String getFirstName() {
@@ -28,8 +34,9 @@ public class ContactNameData {
     }
 
     public ContactNameData withMiddleName(String middleName) {
-        this.middleName= middleName;
-        return this;}
+        this.middleName = middleName;
+        return this;
+    }
 
     public ContactNameData withLastName(String lastName) {
         this.lastName = lastName;
