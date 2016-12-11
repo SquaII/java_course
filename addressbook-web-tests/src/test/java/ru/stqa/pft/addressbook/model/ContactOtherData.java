@@ -1,20 +1,29 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
 public class ContactOtherData {
     @Expose
-    private String title;
+    private String title = "";
     @Expose
-    private String company;
+    private String company = "";
+
+    @Type(type = "text")
     @Expose
     private String address = "";
+
+    @Type(type = "text")
     @Expose
-    private String address2;
+    private String address2 = "";
+
+    @Type(type = "text")
     @Expose
-    private String homepage;
+    private String homepage = "";
+
+    @Type(type = "text")
     @Expose
-    private String notes;
+    private String notes = "";
 
     public String getTitle() {
         return title;

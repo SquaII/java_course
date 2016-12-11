@@ -3,26 +3,47 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.File;
 
+@Entity
+@Table(name = "addressbook")
 @XStreamAlias("contact")
 public class ContactData {
+
+    @Id
+    @Column(name = "id")
     @XStreamOmitField
     private int id;
+
+    @Embedded
     @Expose
     private ContactNameData contactNameData;
+
+    @Embedded
     @Expose
     private ContactPhoneData contactPhoneData;
+
+    @Embedded
     @Expose
     private ContactEmailData contactEmailData;
+
+    @Embedded
     @Expose
     private ContactOtherData contactOtherData;
+
+    @Transient
     @Expose
     private String groupName;
-    @Expose
-    private File photo;
 
+    @Column(name = "photo")
+    @Type(type = "text")
+    @Expose
+    private String photo;
+
+    @Transient
     @XStreamOmitField
     private boolean isListData = false;
 
@@ -123,7 +144,7 @@ public class ContactData {
     }
 
     public File getPhoto() {
-        return photo;
+        return new File(photo);
     }
 
     public ContactData withId(int id) {
@@ -157,7 +178,7 @@ public class ContactData {
     }
 
     public ContactData withPhoto(File photo) {
-        this.photo = photo;
+        this.photo = photo.getPath();
         return this;
     }
 
@@ -179,6 +200,11 @@ public class ContactData {
                 .withHome(getHomePhone()).withMobile(getMobilePhone())
                 .withWork(getWorkPhone()).withHome2(getHomePhone2()).withCleanPhones())
             .withContactOtherData(new ContactOtherData().withAddress(getContactOtherData().getAddress()));
+    }
+
+    public void fixDBData() {
+        contactPhoneData.fixDBData();
+        contactEmailData.fixDBData();
     }
 
     @Override
@@ -221,7 +247,7 @@ public class ContactData {
                 ", contactEmailData=" + getContactEmailData() +
                 ", contactOtherData=" + getContactOtherData() +
                 ", groupName='" + getGroupName() + '\'' +
-                ", photo='" + getPhoto() + '\'' +
+               // ", photo='" + getPhoto() + '\'' +
                 '}';
     }
 

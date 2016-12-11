@@ -7,6 +7,8 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
@@ -20,9 +22,7 @@ public class DbHelper {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
                 .build();
-        MetadataSources a = new MetadataSources(registry);
-        Metadata b = a.buildMetadata();
-        sessionFactory = b.buildSessionFactory();
+        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
     }
 
     public Groups groups() {
@@ -32,5 +32,17 @@ public class DbHelper {
         session.getTransaction().commit();
         session.close();
         return new Groups(result);
+    }
+
+    public Contacts contacts() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<ContactData> result = session.createQuery("from ContactData where deprecated = '0000-00-00'").list();
+        session.getTransaction().commit();
+        session.close();
+        for (ContactData contact : result) {
+            contact.fixDBData();
+        }
+        return new Contacts(result);
     }
 }

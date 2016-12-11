@@ -2,16 +2,30 @@ package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 import org.openqa.selenium.WebElement;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ContactEmailData {
-    @Expose
-    private List<String> emails = new ArrayList<>(Arrays.asList(null, null, null));
 
+    @Type(type = "text")
+    private String email = "";
+    @Type(type = "text")
+    private String email2 = "";
+    @Type(type = "text")
+    private String email3 = "";
+
+    @Transient
+    @Expose
+    private List<String> emails = new ArrayList<>(Arrays.asList("", "", ""));
+
+    @Transient
     @XStreamOmitField
     private boolean isListData = false;
 
@@ -29,16 +43,19 @@ public class ContactEmailData {
 
     public ContactEmailData withEmail1(String email1) {
         this.emails.set(0, email1);
+        email = email1;
         return this;
     }
 
     public ContactEmailData withEmail2(String email2) {
         this.emails.set(1, email2);
+        email = email2;
         return this;
     }
 
     public ContactEmailData withEmail3(String email3) {
         this.emails.set(2, email3);
+        email = email3;
         return this;
     }
 
@@ -52,6 +69,12 @@ public class ContactEmailData {
     public ContactEmailData withAsListData(boolean flag) {
         this.isListData = flag;
         return this;
+    }
+
+    public void fixDBData() {
+        emails.set(0, email);
+        emails.set(1, email2);
+        emails.set(2, email3);
     }
 
     @Override
