@@ -7,6 +7,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "addressbook")
@@ -34,9 +36,9 @@ public class ContactData {
     @Expose
     private ContactOtherData contactOtherData;
 
-    @Transient
-    @Expose
-    private String groupName;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private Set<GroupData> groups = new HashSet<GroupData>();
 
     @Column(name = "photo")
     @Type(type = "text")
@@ -139,12 +141,15 @@ public class ContactData {
         return contactEmailData;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public File getPhoto() {
+        if (photo != null) {
+            return new File(photo);
+        }
+        return null;
     }
 
-    public File getPhoto() {
-        return new File(photo);
+    public Groups getGroups() {
+        return new Groups(groups);
     }
 
     public ContactData withId(int id) {
@@ -169,11 +174,6 @@ public class ContactData {
 
     public ContactData withContactOtherData(ContactOtherData contactOtherData) {
         this.contactOtherData = contactOtherData;
-        return this;
-    }
-
-    public ContactData withGroupName(String groupName) {
-        this.groupName = groupName;
         return this;
     }
 
@@ -223,7 +223,7 @@ public class ContactData {
             return false;
         if (contactOtherData != null ? !contactOtherData.equals(that.contactOtherData) : that.contactOtherData != null)
             return false;
-        return groupName != null ? groupName.equals(that.groupName) : that.groupName == null;
+        return true;
 
     }
 
@@ -234,7 +234,6 @@ public class ContactData {
         result = 31 * result + (contactPhoneData != null ? contactPhoneData.hashCode() : 0);
         result = 31 * result + (contactEmailData != null ? contactEmailData.hashCode() : 0);
         result = 31 * result + (contactOtherData != null ? contactOtherData.hashCode() : 0);
-        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
         return result;
     }
 
@@ -246,8 +245,7 @@ public class ContactData {
                 ", contactPhoneData=" + getContactPhoneData() +
                 ", contactEmailData=" + getContactEmailData() +
                 ", contactOtherData=" + getContactOtherData() +
-                ", groupName='" + getGroupName() + '\'' +
-               // ", photo='" + getPhoto() + '\'' +
+                ", photo='" + getPhoto() + '\'' +
                 '}';
     }
 

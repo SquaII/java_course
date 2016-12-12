@@ -34,12 +34,9 @@ public class ContactHelper extends HelperBase {
         if (contactData.getContactOtherData() != null) { fillContactOthers(contactData.getContactOtherData()); }
 
         if (creation) {
-            if (contactData.getGroupName() != null) {
-                try {
-                    new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroupName());
-                } catch (NoSuchElementException ex) {
-                    // не выбираем группу, если указанной группы не существует
-                }
+            if (contactData.getGroups().size() > 0) {
+                Assert.assertTrue(contactData.getGroups().size() == 1);
+                new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
             }
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
@@ -219,12 +216,28 @@ public class ContactHelper extends HelperBase {
         if (c.getNotes() != null && !c.getNotes().equals("")) {
             expectedHTML = expectedHTML + String.format("%s<br><br>", c.getNotes());
         }
+        /*
         if (c.getGroupName() != null && !c.getGroupName().equals("")) {
             expectedHTML = expectedHTML + String.format("\n<br><i>Member of: <a href=\"./index.php\\?group=[0-9]+\">%s</a></i>\t\n<br>",
                 c.getGroupName());
         }
+        */
         Matcher result =  Pattern.compile(expectedHTML).matcher(contactHTML);
         return result.find();
     }
 
+    public void addToGroup(ContactData contact, GroupData group) {
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText("[all]");
+        selectContactById(contact.getId());
+        new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(group.getId()));
+        click(By.name("add"));
+        click(By.linkText(String.format("group page \"%s\"", group.getName())));
+    }
+
+    public void removeFromGroup(ContactData contact, GroupData group) {
+        new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(group.getId()));
+        selectContactById(contact.getId());
+        click(By.name("remove"));
+        click(By.linkText(String.format("group page \"%s\"", group.getName())));
+    }
 }
